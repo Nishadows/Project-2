@@ -13,13 +13,14 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(myMap);
 
 // Link to GeoJSON
-var APILink = "http://data.beta.nyc//dataset/d6ffa9a4-c598-4b18-8caf-14abde6a5755/resource/74cdcc33-512f-439c-" +
-"a43e-c09588c4b391/download/60dbe69bcd3640d5bedde86d69ba7666geojsonmedianhouseholdincomecensustract.geojson";
+var APILink = "C:\Users\emrey\OneDrive\Project-2\static\js\counties2.geojson";
 
 var geojson;
 
 // Grab data with d3
 d3.json(APILink, function(data) {
+
+console.log(data)
 
   // Create a new choropleth layer
   geojson = L.choropleth(data, {
