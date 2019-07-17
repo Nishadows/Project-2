@@ -12,7 +12,7 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   accessToken: API_KEY
 }).addTo(map);
 
-var link = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/static/js/counties2.geojson";
+var link = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/2001.geojson";
 
 var geojson;
 
@@ -22,19 +22,11 @@ d3.json(link, function(data) {
   // console.log(data)
   
     // Create a new choropleth layer
-  geojson = L.choropleth(data, {
-    
-    // Define what  property in the features to use
-    valueProperty: "POP2010",
-
-    // Set color scale
-    scale: ["#ffffb2", "#b10026"],
-
-    // Number of breaks in step range
-    steps: 10,
-
-    // q for quartile, e for equidistant, k for k-means
-    mode: "q",
+  geojson = L.choropleth(data, {  
+    valueProperty: "HOME_VALUE",// Define what  property in the features to use
+    scale: ["#ffffb2", "#b10026"],// Set color scale
+    steps: 10, // Number of breaks in step range
+    mode: "q",// q for quartile, e for equidistant, k for k-means
     style: {
       // Border color
       color: "#000",
@@ -45,7 +37,7 @@ d3.json(link, function(data) {
     // Binding a pop-up to each layer
     onEachFeature: function(feature, layer) {
       layer.bindPopup(feature.properties.NAME + ", " + feature.properties.STATE_NAME + "<br>Median Home Value:<br>" +
-       "$" + feature.properties.POP2010);
+       "$" + feature.properties.HOME_VALUE);
     }
   }).addTo(map);
 
@@ -78,3 +70,30 @@ d3.json(link, function(data) {
   legend.addTo(map);
 
 });
+
+// Create two separate layer groups below. One for city markers, and one for states markers
+var cityLayer = L.layerGroup(cityMarkers);
+var stateLayer = L.layerGroup(stateMarkers);
+
+
+// Create a baseMaps object to contain the streetmap and darkmap
+var baseMaps = {
+  Street: streetmap,
+  Dark: darkmap
+};
+
+// Create an overlayMaps object here to contain the "State Population" and "City Population" layers
+var overlayMaps = {
+  Cities: cityLayer,
+  States: stateLayer
+};
+
+// Modify the map so that it will have the streetmap, states, and cities layers
+var myMap = L.map("map", {
+  center: [35.2276, -95.2137],
+  zoom: 4,
+  layers: [streetmap,stateLayer,cityLayer]
+});
+
+// Create a layer control, containing our baseMaps and overlayMaps, and add them to the map
+L.control.layers(baseMaps, overlayMaps).addTo(myMap);
