@@ -1,7 +1,7 @@
 // Creating map object
-var myMap = L.map("map", {
-  center: [40.7128, -74.0059],
-  zoom: 11
+var map = L.map("map", {
+  center: [37.5, -80],
+  zoom: 8
 });
 
 // Adding tile layer
@@ -10,23 +10,22 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   maxZoom: 18,
   id: "mapbox.streets",
   accessToken: API_KEY
-}).addTo(myMap);
+}).addTo(map);
 
-// Link to GeoJSON
-var APILink = "C:\Users\emrey\OneDrive\Project-2\static\js\counties2.geojson";
+var link = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/static/js/counties2.geojson";
 
 var geojson;
 
 // Grab data with d3
-d3.json(APILink, function(data) {
+d3.json(link, function(data) {
 
-console.log(data)
-
-  // Create a new choropleth layer
+  // console.log(data)
+  
+    // Create a new choropleth layer
   geojson = L.choropleth(data, {
-
+    
     // Define what  property in the features to use
-    valueProperty: "MHI",
+    valueProperty: "POP2010",
 
     // Set color scale
     scale: ["#ffffb2", "#b10026"],
@@ -38,17 +37,17 @@ console.log(data)
     mode: "q",
     style: {
       // Border color
-      color: "#fff",
+      color: "#000",
       weight: 1,
-      fillOpacity: 0.8
+      fillOpacity: 0.9
     },
 
     // Binding a pop-up to each layer
     onEachFeature: function(feature, layer) {
-      layer.bindPopup(feature.properties.LOCALNAME + ", " + feature.properties.State + "<br>Median Household Income:<br>" +
-        "$" + feature.properties.MHI);
+      layer.bindPopup(feature.properties.NAME + ", " + feature.properties.STATE_NAME + "<br>Median Home Value:<br>" +
+       "$" + feature.properties.POP2010);
     }
-  }).addTo(myMap);
+  }).addTo(map);
 
   // Set up the legend
   var legend = L.control({ position: "bottomright" });
@@ -58,8 +57,8 @@ console.log(data)
     var colors = geojson.options.colors;
     var labels = [];
 
-    // Add min & max
-    var legendInfo = "<h1>Median Income</h1>" +
+  //   // Add min & max
+    var legendInfo = "<h1>Median Home Value (per sq foot)</h1>" +
       "<div class=\"labels\">" +
         "<div class=\"min\">" + limits[0] + "</div>" +
         "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
@@ -76,6 +75,6 @@ console.log(data)
   };
 
   // Adding legend to the map
-  legend.addTo(myMap);
+  legend.addTo(map);
 
 });
