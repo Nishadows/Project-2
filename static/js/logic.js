@@ -1,7 +1,7 @@
 // Creating map object
-var myMap = L.map("map", {
-  center: [40.7128, -74.0059],
-  zoom: 11
+var map = L.map("map", {
+  center: [37.5, -80],
+  zoom: 8
 });
 
 // Adding tile layer
@@ -10,45 +10,36 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   maxZoom: 18,
   id: "mapbox.streets",
   accessToken: API_KEY
-}).addTo(myMap);
+}).addTo(map);
 
-// Link to GeoJSON
-var APILink = "C:\Users\emrey\OneDrive\Project-2\static\js\counties2.geojson";
+var link = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/2001.geojson";
 
 var geojson;
 
 // Grab data with d3
-d3.json(APILink, function(data) {
+d3.json(link, function(data) {
 
-console.log(data)
-
-  // Create a new choropleth layer
-  geojson = L.choropleth(data, {
-
-    // Define what  property in the features to use
-    valueProperty: "MHI",
-
-    // Set color scale
-    scale: ["#ffffb2", "#b10026"],
-
-    // Number of breaks in step range
-    steps: 10,
-
-    // q for quartile, e for equidistant, k for k-means
-    mode: "q",
+  // console.log(data)
+  
+    // Create a new choropleth layer
+  geojson = L.choropleth(data, {  
+    valueProperty: "HOME_VALUE",// Define what  property in the features to use
+    scale: ["#ffffb2", "#b10026"],// Set color scale
+    steps: 10, // Number of breaks in step range
+    mode: "q",// q for quartile, e for equidistant, k for k-means
     style: {
       // Border color
-      color: "#fff",
+      color: "#000",
       weight: 1,
-      fillOpacity: 0.8
+      fillOpacity: 0.9
     },
 
     // Binding a pop-up to each layer
     onEachFeature: function(feature, layer) {
-      layer.bindPopup(feature.properties.LOCALNAME + ", " + feature.properties.State + "<br>Median Household Income:<br>" +
-        "$" + feature.properties.MHI);
+      layer.bindPopup(feature.properties.NAME + ", " + feature.properties.STATE_NAME + "<br>Median Home Value:<br>" +
+       "$" + feature.properties.HOME_VALUE);
     }
-  }).addTo(myMap);
+  }).addTo(map);
 
   // Set up the legend
   var legend = L.control({ position: "bottomright" });
@@ -58,8 +49,8 @@ console.log(data)
     var colors = geojson.options.colors;
     var labels = [];
 
-    // Add min & max
-    var legendInfo = "<h1>Median Income</h1>" +
+  //   // Add min & max
+    var legendInfo = "<h1>Median Home Value (per sq foot)</h1>" +
       "<div class=\"labels\">" +
         "<div class=\"min\">" + limits[0] + "</div>" +
         "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
@@ -76,6 +67,33 @@ console.log(data)
   };
 
   // Adding legend to the map
-  legend.addTo(myMap);
+  legend.addTo(map);
 
 });
+
+// Create two separate layer groups below. One for city markers, and one for states markers
+var cityLayer = L.layerGroup(cityMarkers);
+var stateLayer = L.layerGroup(stateMarkers);
+
+
+// Create a baseMaps object to contain the streetmap and darkmap
+var baseMaps = {
+  Street: streetmap,
+  Dark: darkmap
+};
+
+// Create an overlayMaps object here to contain the "State Population" and "City Population" layers
+var overlayMaps = {
+  Cities: cityLayer,
+  States: stateLayer
+};
+
+// Modify the map so that it will have the streetmap, states, and cities layers
+var myMap = L.map("map", {
+  center: [35.2276, -95.2137],
+  zoom: 4,
+  layers: [streetmap,stateLayer,cityLayer]
+});
+
+// Create a layer control, containing our baseMaps and overlayMaps, and add them to the map
+L.control.layers(baseMaps, overlayMaps).addTo(myMap);
