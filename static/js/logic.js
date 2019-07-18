@@ -1,3 +1,5 @@
+var sliderControl = null
+
 // Creating map object
 var map = L.map("map", {
   center: [37.5, -80],
@@ -12,17 +14,23 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   accessToken: API_KEY
 }).addTo(map);
 
-var link = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/2001.geojson";
+
+
+var link = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/2000.geojson";
 
 var geojson;
 
-// Grab data with d3
+// This is for mouseover
+
+
 d3.json(link, function(data) {
 
   // console.log(data)
   
     // Create a new choropleth layer
-  geojson = L.choropleth(data, {  
+  geojson = 
+  
+  L.choropleth(data, {  
     valueProperty: "HOME_VALUE",// Define what  property in the features to use
     scale: ["#ffffb2", "#b10026"],// Set color scale
     steps: 10, // Number of breaks in step range
@@ -39,7 +47,8 @@ d3.json(link, function(data) {
       layer.bindPopup(feature.properties.NAME + ", " + feature.properties.STATE_NAME + "<br>Median Home Value:<br>" +
        "$" + feature.properties.HOME_VALUE);
     }
-  }).addTo(map);
+  }
+  ).addTo(map);
 
   // Set up the legend
   var legend = L.control({ position: "bottomright" });
@@ -68,32 +77,92 @@ d3.json(link, function(data) {
 
   // Adding legend to the map
   legend.addTo(map);
-
 });
 
-// Create two separate layer groups below. One for city markers, and one for states markers
-var cityLayer = L.layerGroup(cityMarkers);
-var stateLayer = L.layerGroup(stateMarkers);
+var geojson2
+
+link2 = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/2016.geojson"
+
+d3.json(link2, function(data) {
+
+  // console.log(data)
+  
+    // Create a new choropleth layer
+  geojson2 = L.choropleth(data, {  
+    valueProperty: "HOME_VALUE",// Define what  property in the features to use
+    scale: ["#ffffb2", "#b10026"],// Set color scale
+    steps: 10, // Number of breaks in step range
+    mode: "q",// q for quartile, e for equidistant, k for k-means
+    style: {
+      // Border color
+      color: "#000",
+      weight: 1,
+      fillOpacity: 0.9
+    },
+
+    // Binding a pop-up to each layer
+    onEachFeature: function(feature, layer) {
+      layer.bindPopup(feature.properties.NAME + ", " + feature.properties.STATE_NAME + "<br>Median Home Value:<br>" +
+       "$" + feature.properties.HOME_VALUE);
+    },
+    time: "2016"
+
+  }).addTo(map);
+  var layerGroup = L.layerGroup([geojson, geojson2]);
+
+  //Create a marker layer (in the example done via a GeoJSON FeatureCollection)
+  var sliderControl = L.control.sliderControl({position: "topright", layer: layerGroup, follow: 3});
+  
+  //Make sure to add the slider to the map ;-)
+  map.addControl(sliderControl);
+  
+  //And initialize the slider
+  sliderControl.startSlider();
+  
+  // $('#slider-timestamp').html(options.markers[ui.value].feature.properties.time.substr(2000, 2019));
+
+ });
+
+ function highlight(e) {
+	// e for event
+	// The target event property returns the element that triggered the event.
+	// Get access to the layer and set a grey border on it
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.5
+    });
+    layer.bringToFront();
+    // Send information to the info class defined below:
+    info.update(layer.feature.properties);
+}
+
+// This is for mouseout: return to normal style
+function resetHighlight(e) {
+	geojson.resetStyle(e.target);
+	// Senf information to the info class defined below:
+	info.update();
+}
 
 
-// Create a baseMaps object to contain the streetmap and darkmap
-var baseMaps = {
-  Street: streetmap,
-  Dark: darkmap
+function addToFeature(feature, layer) {
+	// Grab the layer and describe listeners
+	layer.on({
+		mouseover: highlight,
+		mouseout: resetHighlight
+	});
+}
+
+// Custom info Control
+var info = L.control();
+info.onAdd = function(map) {
+	this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+	this.update();
+	return this._div;
 };
 
-// Create an overlayMaps object here to contain the "State Population" and "City Population" layers
-var overlayMaps = {
-  Cities: cityLayer,
-  States: stateLayer
-};
 
-// Modify the map so that it will have the streetmap, states, and cities layers
-var myMap = L.map("map", {
-  center: [35.2276, -95.2137],
-  zoom: 4,
-  layers: [streetmap,stateLayer,cityLayer]
-});
 
-// Create a layer control, containing our baseMaps and overlayMaps, and add them to the map
-L.control.layers(baseMaps, overlayMaps).addTo(myMap);
