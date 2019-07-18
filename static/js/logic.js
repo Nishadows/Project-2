@@ -2,8 +2,8 @@ var sliderControl = null
 
 // Creating map object
 var map = L.map("map", {
-  center: [37.5, -80],
-  zoom: 8
+  center: [38.75, -77.5],
+  zoom: 9
 });
 
 // Adding tile layer
@@ -28,9 +28,7 @@ d3.json(link, function(data) {
   // console.log(data)
   
     // Create a new choropleth layer
-  geojson = 
-  
-  L.choropleth(data, {  
+  geojson = L.choropleth(data, {  
     valueProperty: "HOME_VALUE",// Define what  property in the features to use
     scale: ["#ffffb2", "#b10026"],// Set color scale
     steps: 10, // Number of breaks in step range
@@ -108,6 +106,8 @@ d3.json(link2, function(data) {
     time: "2016"
 
   }).addTo(map);
+  
+  
   var layerGroup = L.layerGroup([geojson, geojson2]);
 
   //Create a marker layer (in the example done via a GeoJSON FeatureCollection)
@@ -163,6 +163,73 @@ info.onAdd = function(map) {
 	this.update();
 	return this._div;
 };
+
+
+var gj2000
+var gj2001
+var gj2002
+
+
+
+
+var array = [gj2000,gj2001,gj2002]
+var layerdata
+function makeLayer(layername, year,link) {
+  d3.json(link, function(data) {
+
+    // console.log(data)
+    
+      // Create a new choropleth layer
+    layerdata = L.choropleth(data, {  
+      valueProperty: "HOME_VALUE",// Define what  property in the features to use
+      scale: ["#ffffb2", "#b10026"],// Set color scale
+      steps: 10, // Number of breaks in step range
+      mode: "q",// q for quartile, e for equidistant, k for k-means
+      style: {
+        // Border color
+        color: "#000",
+        weight: 1,
+        fillOpacity: 0.9
+      },
+  
+      // Binding a pop-up to each layer
+      onEachFeature: function(feature, layer) {
+        layer.bindPopup(feature.properties.NAME + ", " + feature.properties.STATE_NAME + "<br>Median Home Value:<br>" +
+         "$" + feature.properties.HOME_VALUE);
+        }, time: year
+      
+    })
+    // Set up the legend
+  });
+  console.log(layerdata)
+  return layerdata;
+  console.log(layerdata)
+}
+
+
+var xxx
+var array = [gj2000,gj2001,gj2002]
+var layerdata
+
+function testFunction(layername, year,link) {
+  xxx = d3.json(link, function(data) {
+    console.log(layername)
+    console.log(link);
+    console.log(year)
+    console.log(data.features);
+
+  });
+  return xxx
+};
+
+array.forEach((gj) => {
+  testFunction(gj,"2015","https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/2015.geojson")
+    // Set up the legend
+});
+
+
+
+
 
 
 
