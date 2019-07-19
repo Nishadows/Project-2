@@ -9,6 +9,31 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   accessToken: API_KEY
 }).addTo(map);
 
+  var legend = L.control({ position: "bottomright" });
+  legend.onAdd = function() {
+    var div = L.DomUtil.create("div", "info legend");
+    var limits = geojson.options.limits;
+    var colors = geojson.options.colors;
+    var labels = [];
+
+  //   // Add min & max
+    var legendInfo = "<h1>Median Home Value (per sq foot)</h1>" +
+      "<div class=\"labels\">" +
+        "<div class=\"min\">" + limits[0] + "</div>" +
+        "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
+      "</div>";
+
+    div.innerHTML = legendInfo;
+
+    limits.forEach(function(limit, index) {
+      labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
+    });
+
+    div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+    return div;
+  };
+  // Adding legend to the map
+  legend.addTo(map);
 
 // var layer2010 = L.geoJson(data, {style: style2010});
 // var layer2011 = L.geoJson(data, {style: style2011});
@@ -16,9 +41,9 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 // var layer2013 = L.geoJson(data, {style: style2013});
 // var layer2014 = L.geoJson(data, {style: style2014});
 // var layer2015 = L.geoJson(data, {style: style2015});
-var layer2016 = L.geoJson(data2016, {style: style});
-var layer2017 = L.geoJson(data2017, {style: style});
-var layer2018 = L.geoJson(data2018, {style: style});
+var layer2016 = L.geoJson(data2016, {style: style, time: "2016"});
+var layer2017 = L.geoJson(data2017, {style: style, time: "2017"});
+var layer2018 = L.geoJson(data2018, {style: style, time: "2018"});
 
 // var layerGroup = L.layerGroup([layer2010,layer2011,layer2012,
 //   layer2013,layer2014,layer2015,layer2016,layer2017,layer2018]);
@@ -50,12 +75,9 @@ function style(feature) {
 var sliderControl = L.control.sliderControl({
   position: "topright", 
   layer: layerGroup, 
-  follow: 3,
-  options:{
-    timeAttribute:"time"
-  }
-});
-
+  follow: true,
+  range: false,
+  timeAttribute:"time"});
 
 
 //Make sure to add the slider to the map ;-)
@@ -65,6 +87,8 @@ map.addControl(sliderControl);
 sliderControl.startSlider();
 $('#slider-timestamp').html(options.markers[ui.value].feature.properties.time.substr(0, 19));
 
+
+// ----------------------------------------------
 // var sliderControl = null;
 
 // var map = L.map("map", {center: [38.75, -77.5], zoom: 9});
