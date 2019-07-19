@@ -15,7 +15,7 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(map);
 
 
-var link = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/2000.geojson";
+var link = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/2011.geojson";
 
 var geojson;
 
@@ -30,7 +30,6 @@ function highlight(e) {
         weight: 5,
         color: '#666',
         dashArray: '',
-        fillOpacity: 0.5
     });
     layer.bringToFront();
     // Send information to the info class defined below:
@@ -73,7 +72,7 @@ d3.json(link, function(data) {
       // Border color
       color: "#000",
       weight: 1,
-      fillOpacity: 0.9
+      fillOpacity: 0.8
     },
 
     // Binding a pop-up to each layer
@@ -81,7 +80,7 @@ d3.json(link, function(data) {
       layer.bindPopup(feature.properties.NAME + ", " + feature.properties.STATE_NAME + "<br>Median Home Value:<br>" +
        "$" + feature.properties.HOME_VALUE);
     },
-    time:"2000"
+    time:"2011"
   }
   ).addTo(map);
 
@@ -132,7 +131,7 @@ d3.json(link2, function(data) {
       // Border color
       color: "#000",
       weight: 1,
-      fillOpacity: 0.9
+      fillOpacity: 0.8
     },
 
     // Binding a pop-up to each layer
