@@ -87,7 +87,6 @@ map.addControl(sliderControl);
 
 //And initialize the slider
 sliderControl.startSlider();
-
 $('#slider-timestamp').html(options.markers[ui.value].feature.properties.time.substr(0, 19));
 
 
