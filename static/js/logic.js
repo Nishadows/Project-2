@@ -9,33 +9,31 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   accessToken: API_KEY
 }).addTo(map);
 
-// var layer2018 = L.geoJson(data2018);
+  var legend = L.control({ position: "bottomright" });
+  legend.onAdd = function() {
+    var div = L.DomUtil.create("div", "info legend");
+    var limits = geojson.options.limits;
+    var colors = geojson.options.colors;
+    var labels = [];
 
-// // $.getJSON("..\static\js\2018.json", function(json) {
-//   var testlayer = L.geoJson(jsondata,{
-//     time: 2018
-//   }),
-//       sliderControl = L.control.sliderControl({
-//           position: "topright",
-//           layer: testlayer
-//       });
-//   //For a Range-Slider use the range property:
-//   // sliderControl = L.control.sliderControl({position: "topright", layer: testlayer, follow: 3});
-//   layerGroup = L.layerGroup([testlayer,layer2018]);
+  //   // Add min & max
+    var legendInfo = "<h1>Median Home Value (per sq foot)</h1>" +
+      "<div class=\"labels\">" +
+        "<div class=\"min\">" + limits[0] + "</div>" +
+        "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
+      "</div>";
 
-//   sliderControl = L.control.sliderControl({
-//       position: "topright",
-//       layer: layerGroup, 
-//       timeAttribute: "Year",
-//       // isEpoch: true,
-//       range: false,
-//       follow: 3
-//   });
-//   //Make sure to add the slider to the map ;-)
-//   map.addControl(sliderControl);
-//   //And initialize the slider
-//   sliderControl.startSlider();
-// // });
+    div.innerHTML = legendInfo;
+
+    limits.forEach(function(limit, index) {
+      labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
+    });
+
+    div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+    return div;
+  };
+  // Adding legend to the map
+  legend.addTo(map);
 
 // var layer2010 = L.geoJson(data, {style: style2010});
 // var layer2011 = L.geoJson(data, {style: style2011});
@@ -77,7 +75,7 @@ function style(feature) {
 var sliderControl = L.control.sliderControl({
   position: "topright", 
   layer: layerGroup, 
-  follow: 3,
+  follow: true,
   range: false,
   timeAttribute:"time"});
 
