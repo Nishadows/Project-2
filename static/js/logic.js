@@ -1,5 +1,3 @@
-var sliderControl = null;
-
 var map = L.map("map", {center: [38.75, -77.5], zoom: 9});
 
 L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
@@ -9,67 +7,112 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   accessToken: API_KEY
 }).addTo(map);
 
-
-//Fetch some data from a GeoJSON file
-var link = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/newfileeee.geojson"
-var testlayer
-var testlayer2
-
-d3.json(link, function(data) {
-    testlayer = L.choropleth(data, {  
-      valueProperty: function (feature) {
-        return feature.properties.Home_Values.2011
-      },
-      console.log(valueProperty)
-  ,// Define what  property in the features to use
-      scale: ["#ffffb2", "#b10026"],// Set color scale
-      steps: 10, // Number of breaks in step range
-      mode: "q",// q for quartile, e for equidistant, k for k-means
-      style: {
-        // Border color
-        color: "#000",
-        weight: 1,
-        fillOpacity: 0.2
-      },
-      // Binding a pop-up to each layer
-      onEachFeature: function(feature, layer) {
-        layer.bindPopup(feature.properties.NAME + ", " + feature.properties.STATE_NAME + "<br>Median Home Value:<br>" +
-         "$" + feature.properties.HOME_VALUE);
-      },
-      time:"2011"
-    }).addTo(map);
-    console.log(testlayer)
-
-    testlayer2 = L.choropleth(data, {  
-      valueProperty: "RENTAL_PRICE",// Define what  property in the features to use
-      scale: ["#ffffb2", "#b10026"],// Set color scale
-      steps: 10, // Number of breaks in step range
-      mode: "q",// q for quartile, e for equidistant, k for k-means
-      style: {
-        // Border color
-        color: "#000",
-        weight: 1,
-        fillOpacity: 0.2
-      },
-      // Binding a pop-up to each layer
-      onEachFeature: function(feature, layer) {
-        layer.bindPopup(feature.properties.NAME + ", " + feature.properties.STATE_NAME + "<br>Median Home Value:<br>" +
-         "$" + feature.properties.RENTAL_PRICE);
-      },
-      time:"2011"
-    }).addTo(map);
-
-var layerGroup = L.layerGroup([testlayer,testlayer2]);
-
-var sliderControl = L.control.sliderControl({position: "topright", layer: layerGroup, follow: 3});
-//Make sure to add the slider to the map ;-)
-map.addControl(sliderControl);
-//And initialize the slider
-sliderControl.startSlider();
-
-$('#slider-timestamp').html(options.markers[ui.value].feature.properties.time.substr(2011, 2019));
-
+map.on('load', function() {
+  map.addLayer({
+    id: 'home_prices',
+    type: 'polygon',
+    source: {
+      type: 'geojson',
+      data: 'https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/newfileeee.geojson' // replace this with the url of your own geojson
+    },
+    paint: {
+      'circle-radius': [
+        'interpolate',
+        ['linear'],
+        ['number', ['get', 'Casualty']],
+        0, 4,
+        5, 24
+      ],
+      'circle-color': [
+        'interpolate',
+        ['linear'],
+        ['number', ['get', 'Casualty']],
+        0, '#2DC4B2',
+        1, '#3BB3C3',
+        2, '#669EC4',
+        3, '#8B88B6',
+        4, '#A2719B',
+        5, '#AA5E79'
+      ],
+      'circle-opacity': 0.8
+    }
+  });
 });
+
+// var sliderControl = null;
+
+// var map = L.map("map", {center: [38.75, -77.5], zoom: 9});
+
+// L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+//   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+//   maxZoom: 18,
+//   id: "mapbox.streets",
+//   accessToken: API_KEY
+// }).addTo(map);
+
+
+// //Fetch some data from a GeoJSON file
+// var link = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/newfileeee.geojson"
+// var testlayer
+// var testlayer2
+
+// d3.json(link, function(data) {
+//     testlayer = L.choropleth(data, {  
+//       valueProperty: function (feature) {
+//         return feature.properties.Home_Values
+//       },
+//       console.log(valueProerty)
+//   ,// Define what  property in the features to use
+//       scale: ["#ffffb2", "#b10026"],// Set color scale
+//       steps: 10, // Number of breaks in step range
+//       mode: "q",// q for quartile, e for equidistant, k for k-means
+//       style: {
+//         // Border color
+//         color: "#000",
+//         weight: 1,
+//         fillOpacity: 0.2
+//       },
+//       // Binding a pop-up to each layer
+//       onEachFeature: function(feature, layer) {
+//         layer.bindPopup(feature.properties.NAME + ", " + feature.properties.STATE_NAME + "<br>Median Home Value:<br>" +
+//          "$" + feature.properties.HOME_VALUE);
+//       },
+//       time:"2011"
+//     }).addTo(map);
+//     console.log(testlayer)
+
+//     testlayer2 = L.choropleth(data, {  
+//       valueProperty: "RENTAL_PRICE",// Define what  property in the features to use
+//       scale: ["#ffffb2", "#b10026"],// Set color scale
+//       steps: 10, // Number of breaks in step range
+//       mode: "q",// q for quartile, e for equidistant, k for k-means
+//       style: {
+//         // Border color
+//         color: "#000",
+//         weight: 1,
+//         fillOpacity: 0.2
+//       },
+//       // Binding a pop-up to each layer
+//       onEachFeature: function(feature, layer) {
+//         layer.bindPopup(feature.properties.NAME + ", " + feature.properties.STATE_NAME + "<br>Median Home Value:<br>" +
+//          "$" + feature.properties.RENTAL_PRICE);
+//       },
+//       time:"2011"
+//     }).addTo(map);
+
+// var layerGroup = L.layerGroup([testlayer,testlayer2]);
+
+// var sliderControl = L.control.sliderControl({position: "topright", layer: layerGroup, follow: 3});
+// //Make sure to add the slider to the map ;-)
+// map.addControl(sliderControl);
+// //And initialize the slider
+// sliderControl.startSlider();
+
+// $('#slider-timestamp').html(options.markers[ui.value].feature.properties.time.substr(2011, 2019));
+
+// });
+
+// ------------------------------------------------
 //For a Range-Slider use the range property:
 
 // // Creating map object
