@@ -11,13 +11,17 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 
 //Fetch some data from a GeoJSON file
-var link = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/2011.geojson"
+var link = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/newfileeee.geojson"
 var testlayer
 var testlayer2
 
 d3.json(link, function(data) {
     testlayer = L.choropleth(data, {  
-      valueProperty: "HOME_VALUE",// Define what  property in the features to use
+      valueProperty: function (feature) {
+        return feature.properties.Home_Values.2011
+      },
+      console.log(valueProperty)
+  ,// Define what  property in the features to use
       scale: ["#ffffb2", "#b10026"],// Set color scale
       steps: 10, // Number of breaks in step range
       mode: "q",// q for quartile, e for equidistant, k for k-means
