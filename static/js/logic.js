@@ -85,6 +85,7 @@ d3.json(link, function(data) {
   }
   ).addTo(map);
 
+
   // Set up the legend
   var legend = L.control({ position: "bottomright" });
   legend.onAdd = function() {
@@ -118,6 +119,8 @@ var geojson2
 link2 = "https://raw.githubusercontent.com/emreynolds9/Project-2/master/Resources/2016.geojson"
 
 d3.json(link2, function(data) {
+
+  // console.log(data)
   
     // Create a new choropleth layer
   geojson2 = L.choropleth(data, {  
@@ -140,6 +143,7 @@ d3.json(link2, function(data) {
     time: "2016"
 
   }).addTo(map);
+  
 
   
   var layerGroup = L.layerGroup([geojson, geojson2]);
