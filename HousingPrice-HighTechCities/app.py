@@ -22,7 +22,11 @@ def index():
 @app.route("/visualization")
 def visual():
     return render_template("visual.html")
-    
+
+@app.route("/visualization2")
+def visual2():
+    return render_template("visual2.html")
+
 
 
 
