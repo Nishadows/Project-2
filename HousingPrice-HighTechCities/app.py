@@ -19,6 +19,11 @@ def index():
     """Return the homepage."""
     return render_template("index.html")
 
+@app.route("/visualization")
+def visual():
+    return render_template("visual.html")
+    
+
 
 
 if __name__ == "__main__":
