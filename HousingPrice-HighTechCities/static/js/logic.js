@@ -154,7 +154,7 @@ homelegend.onAdd = function (map) {
   // loop through our density intervals and generate a label with a colored square for each interval
   for (var i = 0; i < grades.length; i++) {
       div.innerHTML +=
-          '<i style="background:' + getColorHome(grades[i] + 1) + '"></i> ' +
+          '<i style="background: ' + getColorHome(grades[i] + 1) + '"></i> ' +
           grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
   }
   return div;
