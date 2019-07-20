@@ -1,6 +1,6 @@
 var sliderControl2 =null
 
-var map2 = L.map("map", {center: [38.9, -77.25], zoom: 9});
+var map2 = L.map("nova-map", {center: [38.9, -77.25], zoom: 9});
 
 console.log(map2)
 L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {

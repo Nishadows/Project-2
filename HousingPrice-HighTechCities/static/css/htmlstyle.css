@@ -24,7 +24,7 @@
     text-align: center;
 }
 
-#map{
+.map-container{
     /* width:650px; */
     height:650px;
 }
