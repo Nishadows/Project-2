@@ -1,17 +1,22 @@
-var sliderControl=null
+// var sliderControl=null
 
-<<<<<<< Updated upstream
-var map = L.map("seattle-map", {center: [38.9, -77.25], zoom: 9});
-=======
-var map = L.map("map", {center: [47.5, -121.75], zoom: 8});
->>>>>>> Stashed changes
+var seattle = L.map("seattle", {center: [47.5, -121.75], zoom: 8});
+var nova = L.map("nova", {center: [38.9, -77.25], zoom: 9});
+
 
 L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
   maxZoom: 18,
   id: "mapbox.streets",
   accessToken: API_KEY
-}).addTo(map);
+}).addTo(seattle);
+
+L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+  attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+  maxZoom: 18,
+  id: "mapbox.streets",
+  accessToken: API_KEY
+}).addTo(nova);
 
 
 var homeLayer2011 = L.geoJson(data2011, {style: styleHome, time:"2011", 
@@ -134,7 +139,7 @@ var rentalLayer2011 = L.geoJson(data2011, {style: styleRental, time:"2011",
     });
   
 var homeLayerGroup = L.layerGroup([homeLayer2011,homeLayer2012,
-  homeLayer2013,homeLayer2014,homeLayer2015,homeLayer2016,homeLayer2017,homeLayer2018]);
+  homeLayer2013,homeLayer2014,homeLayer2015,homeLayer2016,homeLayer2017,homeLayer2018])
     
 var rentalLayerGroup = L.layerGroup([rentalLayer2011,rentalLayer2012,
   rentalLayer2013,rentalLayer2014,rentalLayer2015,rentalLayer2016,rentalLayer2017,homeLayer2018]);
@@ -155,7 +160,6 @@ homelegend.onAdd = function (map) {
   return div;
 };
 
-homelegend.addTo(map);
 
 var rentallegend = L.control({position: 'bottomright'});
 
@@ -172,7 +176,12 @@ rentallegend.onAdd = function (map) {
   return div;
 };
 
-rentallegend.addTo(map);
+rentallegend.addTo(seattle);
+rentallegend.addTo(nova);
+
+homelegend.addTo(seattle);
+homelegend.addTo(nova);
+
 
 function getColorHome(d) {
   return d > 530 ? '#fff' :
@@ -228,14 +237,62 @@ var sliderControl = L.control.sliderControl({
   range: false,
   timeAttribute:"time"});
 
+  var sliderControl2 = L.control.sliderControl({
+    position: "bottomleft", 
+    layer: rentalLayerGroup, 
+    follow: true,
+    range: false,
+    timeAttribute:"time"});
+  
 
 //Make sure to add the slider to the nova-map ;-)
-map.addControl(sliderControl);
+seattle.addControl(sliderControl);
+nova.addControl(sliderControl2);
 
 //And initialize the slider
 sliderControl.startSlider();
+sliderControl2.startSlider();
+
 // $('#slider-timestamp').html(options.markers[ui.value].feature.properties.time.substr(0, 19));
 
 // Create a layer control, containing our basenova-maps and overlayMaps, and add them to the map
-L.control.layers(rentalLayerGroup).addTo(map);
+// L.control.layers(rentalLayerGroup).addTo(map);
+// L.control.layers(rentalLayerGroup).addTo(map2);
+
+var streetmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+  attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+  maxZoom: 18,
+  id: "mapbox.streets",
+  accessToken: API_KEY
+});
+
+var darkmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+  attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+  maxZoom: 18,
+  id: "mapbox.dark",
+  accessToken: API_KEY
+});
+// Create a baseMaps object
+var baseMaps = {
+  "Street Map": streetmap,
+  "Dark Map": darkmap
+};
+
+// Create an overlay object
+var overlayMaps = {
+  "Rental Prices": rentalLayerGroup,
+  "Home Value": homeLayerGroup
+};
+
+// Define a map object
+
+
+// Pass our map layers into our layer control
+// Add the layer control to the map
+L.control.layers(baseMaps, overlayMaps, {
+  collapsed: false
+}).addTo(seattle);
+L.control.layers(baseMaps, overlayMaps, {
+  collapsed: false
+}).addTo(nova);
 
