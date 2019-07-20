@@ -23,29 +23,29 @@ var homeLayer2011 = L.geoJson(data2011, {style: styleHome, time:"2011",
 onEachFeature: function (feature, layer) {
 layer.bindPopup('<h3>'+feature.properties.County+', '+feature.properties.State+
 '<br>'+feature.properties.time+'<hr></h3><h4><br>Average Home Price per Square Foot: $'+
-feature.properties.Home_Value+'</br><br>Average Rental Price per Month: $'+
-feature.properties.Rental_Price+'</br></h4>')}
+feature.properties.Home_Value.toFixed(2) +'</br><br>Average Rental Price per Month: $'+
+feature.properties.Rental_Price.toFixed(2) +'</br></h4>')}
 });
 var homeLayer2012 = L.geoJson(data2012, {style: styleHome, time:"2012", 
 onEachFeature: function (feature, layer) {
   layer.bindPopup('<h3>'+feature.properties.County+', '+feature.properties.State+
   '<br>'+feature.properties.time+'<hr></h3><h4><br>Average Home Price per Square Foot: $'+
-  feature.properties.Home_Value+'</br><br>Average Rental Price per Month: $'+
-  feature.properties.Rental_Price+'</br></h4>')}
+  feature.properties.Home_Value.toFixed(2) +'</br><br>Average Rental Price per Month: $'+
+  feature.properties.Rental_Price.toFixed(2) +'</br></h4>')}
 });
 var homeLayer2013 = L.geoJson(data2013, {style: styleHome, time:"2013", 
 onEachFeature: function (feature, layer) {
   layer.bindPopup('<h3>'+feature.properties.County+', '+feature.properties.State+
   '<br>'+feature.properties.time+'<hr></h3><h4><br>Average Home Price per Square Foot: $'+
-  feature.properties.Home_Value+'</br><br>Average Rental Price per Month: $'+
-  feature.properties.Rental_Price+'</br></h4>')}
+  feature.properties.Home_Value.toFixed(2) +'</br><br>Average Rental Price per Month: $'+
+  feature.properties.Rental_Price.toFixed(2) +'</br></h4>')}
 });
 var homeLayer2014 = L.geoJson(data2014, {style: styleHome, time:"2014", 
 onEachFeature: function (feature, layer) {
   layer.bindPopup('<h3>'+feature.properties.County+', '+feature.properties.State+
   '<br>'+feature.properties.time+'<hr></h3><h4><br>Average Home Price per Square Foot: $'+
-  feature.properties.Home_Value+'</br><br>Average Rental Price per Month: $'+
-  feature.properties.Rental_Price+'</br></h4>')}
+  feature.properties.Home_Value.toFixed(2) +'</br><br>Average Rental Price per Month: $'+
+  feature.properties.Rental_Price.toFixed(2) +'</br></h4>')}
 });
 var homeLayer2015 = L.geoJson(data2015, {style: styleHome, time:"2015", 
 onEachFeature: function (feature, layer) {
