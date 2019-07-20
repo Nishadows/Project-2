@@ -25,16 +25,16 @@ var layer2018 = L.geoJson(data2018, {style: style, time: "2018"});
 
 var layerGroup = L.layerGroup([layer2016,layer2017,layer2018])
 
-function getColor(d) {
-  return d > 530 ? '#800026' :
-         d > 500  ? '#BD0026' :
-         d > 200  ? '#E31A1C' :
-         d > 100  ? '#FC4E2A' :
-         d > 50   ? '#FD8D3C' :
-         d > 20   ? '#FEB24C' :
-         d > 10   ? '#FED976' :
-                    '#FFEDA0';
-};
+// function getColor(d) {
+//   return d > 530 ? '#800026' :
+//          d > 460  ? '#BD0026' :
+//          d > 410  ? '#E31A1C' :
+//          d > 350  ? '#FC4E2A' :
+//          d > 290   ? '#FD8D3C' :
+//          d > 230   ? '#FEB24C' :
+//          d > 170   ? '#FED976' :
+//          d>110 ?      '#FFEDA0';
+// };
 
 function style(feature) {
   return {
@@ -63,31 +63,6 @@ sliderControl.startSlider();
 $('#slider-timestamp').html(options.markers[ui.value].feature.properties.time.substr(0, 19));
 
 
-var legend = L.control({ position: "bottomright" });
-legend.onAdd = function() {
-  var div = L.DomUtil.create("div", "info legend");
-  var limits = geojson.options.limits;
-  var colors = geojson.options.colors;
-  var labels = [];
-
-//   // Add min & max
-  var legendInfo = "<h1>Median Home Value (per sq foot)</h1>" +
-    "<div class=\"labels\">" +
-      "<div class=\"min\">" + limits[0] + "</div>" +
-      "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
-    "</div>";
-
-  div.innerHTML = legendInfo;
-
-  limits.forEach(function(limit, index) {
-    labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
-  });
-
-  div.innerHTML += "<ul>" + labels.join("") + "</ul>";
-  return div;
-};
-// Adding legend to the map
-legend.addTo(map);
 
 // ----------------------------------------------
 // var sliderControl = null;
