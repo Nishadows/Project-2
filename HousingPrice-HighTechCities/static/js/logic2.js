@@ -1,13 +1,14 @@
-var sliderControl=null
+var sliderControl2 =null
 
-var map = L.map("map", {center: [38.9, -77.25], zoom: 9});
+var map2 = L.map("map", {center: [38.9, -77.25], zoom: 9});
 
+console.log(map2)
 L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
   maxZoom: 18,
   id: "mapbox.streets",
   accessToken: API_KEY
-}).addTo(map);
+}).addTo(map2);
 
 var layer2011 = L.geoJson(data2011, {style: style, time:"2011", 
 onEachFeature: function (feature, layer) {
@@ -75,8 +76,8 @@ var layerGroup = L.layerGroup([layer2011,layer2012,
   layer2013,layer2014,layer2015,layer2016,layer2017,layer2018]);
 
 
-function getColor(d) {
-  return d > 530 ? '#fff' :
+function getColor2(d) {
+  return d > 530 ? '##fff' :
          d >  470 ? '#BD0026' :
          d > 410  ? '#E31A1C' :
          d > 350  ? '#FC4E2A' :
@@ -87,26 +88,26 @@ function getColor(d) {
          '#FFEDA0';
         }
 
-var legend = L.control({position: 'bottomright'});
+var legend2 = L.control({position: 'bottomright'});
 
-legend.onAdd = function (map) {
+legend2.onAdd = function (map) {
   var div = L.DomUtil.create('div', 'info legend'),
       grades = [110, 170, 230, 290, 350, 410, 470,530],
       labels = [110-170,170-130,230-290,290-350,350-410,410-470,470-530];
   // loop through our density intervals and generate a label with a colored square for each interval
   for (var i = 0; i < grades.length; i++) {
       div.innerHTML +=
-          '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+          '<i style="background:' + getColor2(grades[i] + 1) + '"></i> ' +
           grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
   }
   return div;
 };
 
-legend.addTo(map);
+legend2.addTo(map2);
 
 function style(feature) {
   return {
-      fillColor: getColor(feature.properties.Home_Value),
+      fillColor: getColor2(feature.properties.Home_Value),
       weight: 2,
       opacity: 1,
       color: 'white',
@@ -115,7 +116,7 @@ function style(feature) {
   };
 }
 
-var sliderControl = L.control.sliderControl({
+var sliderControl2 = L.control.sliderControl({
   position: "topright", 
   layer: layerGroup, 
   follow: true,
@@ -123,9 +124,11 @@ var sliderControl = L.control.sliderControl({
   timeAttribute:"time"});
 
 
-//Make sure to add the slider to the map ;-)
-map.addControl(sliderControl);
+//Make sure to add the slider to the map2 ;-)
+map2.addControl(sliderControl2);
 
 //And initialize the slider
-sliderControl.startSlider();
-$('#slider-timestamp').html(options.markers[ui.value].feature.properties.time.substr(0, 19));
+sliderControl2.startSlider();
+// $('#slider-timestamp').html(options.markers[ui.value].feature.properties.time.substr(0, 19));
+
+
