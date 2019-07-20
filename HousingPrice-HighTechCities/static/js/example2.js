@@ -172,9 +172,9 @@
 
 
 
-var sliderControl=null
+var sliderControl=null;
 
-var seattle = L.map("seattle", {center: [38.9, -77.25], zoom: 9, layer:{baseMaps,groupedOverlays}});
+var seattle = L.map("seattle", {center: [47.5, -121.75], zoom: 8, layer:{baseMaps,groupedOverlays}});
 
 
 L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
