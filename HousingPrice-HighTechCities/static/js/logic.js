@@ -13,20 +13,25 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 
 // legend.addTo(map);
-// // var layer2010 = L.geoJson(data, {style: style2010});
-// // var layer2011 = L.geoJson(data, {style: style2011});
-// // var layer2012 = L.geoJson(data, {style: style2012});
-// // var layer2013 = L.geoJson(data, {style: style2013});
-// // var layer2014 = L.geoJson(data, {style: style2014});
-// // var layer2015 = L.geoJson(data, {style: style2015});
+// var layer2010 = L.geoJson(data2010, {style: style, time:"2010"});
+var layer2011 = L.geoJson(data2011, {style: style, time:"2011"});
+var layer2012 = L.geoJson(data2012, {style: style, time:"2012"});
+var layer2013 = L.geoJson(data2013, {style: style, time:"2013"});
+var layer2014 = L.geoJson(data2014, {style: style, time:"2014"});
+var layer2015 = L.geoJson(data2015, {style: style, time:"2015"});
 var layer2016 = L.geoJson(data2016, {style: style, time: "2016"});
 var layer2017 = L.geoJson(data2017, {style: style, time: "2017"});
-var layer2018 = L.geoJson(data2018, {style: style, time: "2018"});
+var layer2018 = L.geoJson(data2018, 
+  {style: style, 
+    time: "2018",
+    onEachFeature: function (feature, layer) {
+  layer.bindPopup('<h1>'+feature.properties.time+'</h1><p>name: '+feature.properties.time+'</p>')}
+    });
 
-// // var layerGroup = L.layerGroup([layer2010,layer2011,layer2012,
-// //   layer2013,layer2014,layer2015,layer2016,layer2017,layer2018]);
+var layerGroup = L.layerGroup([layer2011,layer2012,
+  layer2013,layer2014,layer2015,layer2016,layer2017,layer2018]);
 
-var layerGroup = L.layerGroup([layer2016,layer2017,layer2018])
+// var layerGroup = L.layerGroup([layer2016,layer2017,layer2018])
 
 function getColor(d) {
   return d > 530 ? '#800026' :
