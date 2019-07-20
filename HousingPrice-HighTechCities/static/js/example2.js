@@ -1,6 +1,6 @@
 // var sliderControl=null
 
-// var nova = L.map("nova", {center: [38.9, -77.25], zoom: 9});
+// var seattle = L.map("seattle", {center: [38.9, -77.25], zoom: 9});
 
 
 // L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
@@ -8,7 +8,7 @@
 //   maxZoom: 18,
 //   id: "mapbox.streets",
 //   accessToken: API_KEY
-// }).addTo(nova);
+// }).addTo(seattle);
 
 
 // var homeLayer2011 = L.geoJson(data2011, {style: styleHome, time:"2011", 
@@ -89,7 +89,7 @@
 //   return div;
 // };
 
-// homelegend.addTo(nova);
+// homelegend.addTo(seattle);
 
 
 // function getColorHome(d) {
@@ -125,16 +125,16 @@
 //   timeAttribute:"time"});
   
 
-// //Make sure to add the slider to the nova-map ;-)
-// nova.addControl(sliderControl);
+// //Make sure to add the slider to the seattle-map ;-)
+// seattle.addControl(sliderControl);
 
 // //And initialize the slider
 // sliderControl.startSlider();
 
 // $('#slider-timestamp').html(options.markers[ui.value].feature.properties.time.substr(0, 19));
 
-// // Create a layer control, containing our basenova-maps and overlayMaps, and add them to the map
-// L.control.layers(homeLayerGroup).addTo(nova);
+// // Create a layer control, containing our baseseattle-maps and overlayMaps, and add them to the map
+// L.control.layers(homeLayerGroup).addTo(seattle);
 
 // var streetmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
 //   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
@@ -168,13 +168,13 @@
 
 // // L.control.layers(baseMaps, groupedOverlays, {
 // //   collapsed: false
-// // }).addTo(nova);
+// // }).addTo(seattle);
 
 
 
 var sliderControl=null
 
-var nova = L.map("nova", {center: [38.9, -77.25], zoom: 9, layer:{baseMaps,groupedOverlays}});
+var seattle = L.map("seattle", {center: [38.9, -77.25], zoom: 9, layer:{baseMaps,groupedOverlays}});
 
 
 L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
@@ -182,7 +182,7 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   maxZoom: 18,
   id: "mapbox.streets",
   accessToken: API_KEY
-}).addTo(nova);
+}).addTo(seattle);
 
 
 var homeLayer2011 = L.geoJson(data2011, {style: styleHome, time:"2011", 
@@ -263,7 +263,7 @@ homelegend.onAdd = function (map) {
   return div;
 };
 
-homelegend.addTo(nova);
+homelegend.addTo(seattle);
 
 var rentalLayer2011 = L.geoJson(data2011, {style: styleRental, time:"2011", 
   onEachFeature: function (feature, layer) {
@@ -343,7 +343,7 @@ rentallegend.onAdd = function (map) {
   return div;
 };
 
-rentallegend.addTo(nova);
+rentallegend.addTo(seattle);
 
 
 function getColorHome(d) {
@@ -401,17 +401,17 @@ sliderControl = L.control.sliderControl({
   timeAttribute:"time"});
   
 
-//Make sure to add the slider to the nova-map ;-)
-nova.addControl(sliderControl);
+//Make sure to add the slider to the seattle-map ;-)
+seattle.addControl(sliderControl);
 
 //And initialize the slider
 sliderControl.startSlider();
 
 // $('#slider-timestamp').html(options.markers[ui.value].feature.properties.time.substr(0, 19));
 
-// Create a layer control, containing our basenova-maps and overlayMaps, and add them to the map
-// L.control.layers(homeLayerGroup).addTo(nova);
-// L.control.layers(rentalLayerGroup).addTo(nova);
+// Create a layer control, containing our baseseattle-maps and overlayMaps, and add them to the map
+// L.control.layers(homeLayerGroup).addTo(seattle);
+// L.control.layers(rentalLayerGroup).addTo(seattle);
 
 
 var streetmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
@@ -441,5 +441,5 @@ var groupedOverlays = {
 
 L.control.layers(baseMaps, groupedOverlays, {
   collapsed: false
-}).addTo(nova);
+}).addTo(seattle);
 
