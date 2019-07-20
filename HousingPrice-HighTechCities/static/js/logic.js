@@ -9,22 +9,22 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   accessToken: API_KEY
 }).addTo(map);
 
-var legend = L.control({position: 'bottomright'});
+// var legend = L.control({position: 'bottomright'});
 
 
-legend.addTo(map);
-// var layer2010 = L.geoJson(data, {style: style2010});
-// var layer2011 = L.geoJson(data, {style: style2011});
-// var layer2012 = L.geoJson(data, {style: style2012});
-// var layer2013 = L.geoJson(data, {style: style2013});
-// var layer2014 = L.geoJson(data, {style: style2014});
-// var layer2015 = L.geoJson(data, {style: style2015});
+// legend.addTo(map);
+// // var layer2010 = L.geoJson(data, {style: style2010});
+// // var layer2011 = L.geoJson(data, {style: style2011});
+// // var layer2012 = L.geoJson(data, {style: style2012});
+// // var layer2013 = L.geoJson(data, {style: style2013});
+// // var layer2014 = L.geoJson(data, {style: style2014});
+// // var layer2015 = L.geoJson(data, {style: style2015});
 var layer2016 = L.geoJson(data2016, {style: style, time: "2016"});
 var layer2017 = L.geoJson(data2017, {style: style, time: "2017"});
 var layer2018 = L.geoJson(data2018, {style: style, time: "2018"});
 
-// var layerGroup = L.layerGroup([layer2010,layer2011,layer2012,
-//   layer2013,layer2014,layer2015,layer2016,layer2017,layer2018]);
+// // var layerGroup = L.layerGroup([layer2010,layer2011,layer2012,
+// //   layer2013,layer2014,layer2015,layer2016,layer2017,layer2018]);
 
 var layerGroup = L.layerGroup([layer2016,layer2017,layer2018])
 
@@ -37,7 +37,8 @@ function getColor(d) {
          d >  230  ? '#FEB24C' :
          d > 170   ? '#FED976' :
          d >110    ? '#FFEDA0':
-};
+         '#FFEDA0';
+        }
 
 function style(feature) {
   return {
@@ -66,17 +67,17 @@ sliderControl.startSlider();
 $('#slider-timestamp').html(options.markers[ui.value].feature.properties.time.substr(0, 19));
 
 
-legend.onAdd = function (map) {
+// legend.onAdd = function (map) {
 
-  var div = L.DomUtil.create('div', 'info legend'),
-      grades = [110, 170, 230, 290, 350, 410, 470,530],
-      labels = [110-170,170-130,230-290,290-350,350-410,410-470,470-530];
-  // loop through our density intervals and generate a label with a colored square for each interval
-  for (var i = 0; i < grades.length; i++) {
-      div.innerHTML +=
-          '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-          grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-  }
+//   var div = L.DomUtil.create('div', 'info legend'),
+//       grades = [110, 170, 230, 290, 350, 410, 470,530],
+//       labels = [110-170,170-130,230-290,290-350,350-410,410-470,470-530];
+//   // loop through our density intervals and generate a label with a colored square for each interval
+//   for (var i = 0; i < grades.length; i++) {
+//       div.innerHTML +=
+//           '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+//           grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+//   }
 
-  return div;
-};
+//   return div;
+// };
